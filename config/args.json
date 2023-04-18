@@ -1,0 +1,18 @@
+//Inside args.json, we'll add the parameters that are relevant to data processing
+// and model training.
+
+// We don't need model training params for MileStone-1, but we'll add them anyways.
+
+{
+  "model_ckpt": "distilbert-base-uncased",
+  "num_labels": 6,
+  "batch_size": 64,
+  "learning_rate": 2e-5,
+  "epochs": 2,
+  "weight_decay": 0.01,
+  "evaluation_strategy": "epoch",
+  "logging_steps": 1,
+  "log_level": "info",
+  "push_to_hub": false,
+  "output_dir": "distil-bert-emotions"
+}
