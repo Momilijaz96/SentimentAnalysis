@@ -37,7 +37,6 @@ def predict_sentiment(model: DistilBertModel, text: str) -> int:
     """
     encodings = preprocess_data(text)
     outputs = model(**encodings)
-    print(outputs)
-    prediction = outputs.logits.argmax(-1).squeeze().tolist()
-    prediction_label = model.config.id2label[prediction]
-    return prediction_label
+    predictions = outputs.logits.argmax(-1).squeeze().tolist()
+    prediction_labels = [model.config.id2label[p] for p in predictions]
+    return prediction_labels

@@ -124,3 +124,27 @@ Preprocessing data
 INFO 2023-04-19 15:31:58,702 [root:data.py:load_tokenizer:15]
 Loading tokenizer from checkpoint
 
+INFO 2023-04-19 15:45:22,610 [root:main.py:predict_emotion:14]
+Predicting sentiment of given text
+
+INFO 2023-04-19 15:45:22,611 [root:predict.py:load_model_ckpt:22]
+Loading model from checkpoint
+
+INFO 2023-04-19 15:45:23,371 [root:data.py:preprocess_data:27]
+Preprocessing data
+
+INFO 2023-04-19 15:45:23,371 [root:data.py:load_tokenizer:15]
+Loading tokenizer from checkpoint
+
+INFO 2023-04-19 15:46:23,459 [root:main.py:predict_emotion:14]
+Predicting sentiment of given text
+
+INFO 2023-04-19 15:46:23,460 [root:predict.py:load_model_ckpt:22]
+Loading model from checkpoint
+
+INFO 2023-04-19 15:46:24,096 [root:data.py:preprocess_data:27]
+Preprocessing data
+
+INFO 2023-04-19 15:46:24,096 [root:data.py:load_tokenizer:15]
+Loading tokenizer from checkpoint
+

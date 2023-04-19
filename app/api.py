@@ -5,7 +5,7 @@ from typing import Dict
 from datetime import datetime
 from functools import wraps
 from sentiment_analysis.main import predict_emotion
-
+from app.schemas import PredictPayLoad
 
 # Define application
 app = FastAPI(
@@ -51,13 +51,14 @@ def index(request: Request) -> Dict:
 
 @app.get("/predict")
 @construct_response
-def predict_sentiment(request: Request) -> Dict:
+def predict_sentiment(request: Request, payload: PredictPayLoad) -> Dict:
     """
     Predict sentiment of the given tweet text.
     """
     # Get text from query parameters
-    text = request.query_params.get("text", None)
-    if text is None:
+
+    texts = [item.text for item in payload.texts]
+    if texts is None:
         response = {
             "message": "Please provide text to predict sentiment",
             "status-code": HTTPStatus.BAD_REQUEST,
@@ -65,7 +66,7 @@ def predict_sentiment(request: Request) -> Dict:
         }
         return response
     # Predict sentiment
-    prediction = predict_emotion(text)
+    prediction = predict_emotion(texts)
     response = {
         "message": "Sentiment prediction successful",
         "status-code": HTTPStatus.OK,
