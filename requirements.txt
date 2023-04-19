@@ -1,2 +1,6 @@
-transformers==4.22.2
+
+transformers==4.28.1
 scikit-learn==1.2.2
+torch==2.0.0
+fsatapi==0.95.1
+uvicorn==0.21.1

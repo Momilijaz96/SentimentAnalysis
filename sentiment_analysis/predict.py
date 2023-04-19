@@ -1,9 +1,13 @@
 # Model inference utilty
-from transformers import AutoModel, DistilBertModel, AutoTokenizer
+from transformers import (
+    AutoModelForSequenceClassification,
+    DistilBertModel,
+    AutoTokenizer,
+)
 import torch
 
 
-from data import preprocess_data
+from .data import preprocess_data
 from config.config import logger, label2id, id2label
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -16,12 +20,12 @@ def load_model_ckpt(modle_ckpt_path: str) -> DistilBertModel:
     Returns:
     """
     logger.info("Loading model from checkpoint")
-    return AutoModel.from_pretrained(
+    return AutoModelForSequenceClassification.from_pretrained(
         modle_ckpt_path, label2id=label2id, id2label=id2label
     )
 
 
-def predict(model: DistilBertModel, text: str) -> int:
+def predict_sentiment(model: DistilBertModel, text: str) -> int:
     """
     Predict sentiment of given single sentence
     Args:
@@ -31,9 +35,9 @@ def predict(model: DistilBertModel, text: str) -> int:
     Returns:
         predictions: int
     """
-    logger.info("Predicting sentiment of given text")
     encodings = preprocess_data(text)
     outputs = model(**encodings)
+    print(outputs)
     prediction = outputs.logits.argmax(-1).squeeze().tolist()
     prediction_label = model.config.id2label[prediction]
     return prediction_label

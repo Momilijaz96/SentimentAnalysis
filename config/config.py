@@ -7,7 +7,7 @@ import sys
 # Directories
 BASE_DIR = Path(__file__).resolve().parent.parent.absolute()
 CONFIG_DIR = Path(BASE_DIR / "config")
-
+MODEL_SAVE_PATH = Path(BASE_DIR / "saved_model" / "distil_bert_emotion_ckpt")
 
 # Declare id2label and label2id mappings
 label2id = {"sadness": 0, "joy": 1, "love": 2, "anger": 3, "fear": 4, "surprise": 5}

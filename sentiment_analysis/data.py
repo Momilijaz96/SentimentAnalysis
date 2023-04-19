@@ -1,7 +1,7 @@
 # Add data preprocessing functions
 
 from transformers import AutoTokenizer
-from config.config import logger
+from config.config import logger, MODEL_SAVE_PATH
 
 
 def load_tokenizer(ckpt_path: str) -> AutoTokenizer:
@@ -16,16 +16,16 @@ def load_tokenizer(ckpt_path: str) -> AutoTokenizer:
     return AutoTokenizer.from_pretrained(ckpt_path)
 
 
-def preprocess_data(tokenizer: AutoTokenizer, text: str) -> dict:
+def preprocess_data(text: str) -> dict:
     """
     Function to preprocess data.
     Args:
-        tokenizer: AutoTokenizer
         text: str
     Returns:
         encodings: dict
     """
     logger.info("Preprocessing data")
-    encodings = tokenizer(text, truncation=True, padding=True)
+    tokenizer = load_tokenizer(MODEL_SAVE_PATH)
+    encodings = tokenizer(text, truncation=True, padding=True, return_tensors="pt")
 
     return encodings
