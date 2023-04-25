@@ -20,6 +20,15 @@ def construct_response(f):
 
     @wraps(f)
     def wrap(request: Request, *args, **kwargs) -> Dict:
+        """
+        Function to wrap response of other endpoints in a JSON response.
+        Args:
+            request: Request
+            *args: Arguments
+            **kwargs: Keyword arguments
+        Returns:
+            response: Dict
+        """
         results = f(request, *args, **kwargs)
         response = {
             "message": results["message"],
@@ -39,7 +48,11 @@ def construct_response(f):
 @construct_response
 def index(request: Request) -> Dict:
     """
-    Health check endpoint
+    Health check endpoint.
+    Args:
+        request: Request
+    Returns:
+        response: Dict
     """
     response = {
         "message": "Sentiment Analysis API is up and running",
@@ -54,6 +67,11 @@ def index(request: Request) -> Dict:
 def predict_sentiment(request: Request, payload: PredictPayLoad) -> Dict:
     """
     Predict sentiment of the given tweet text.
+    Args:
+        request: Request
+        payload: PredictPayLoad
+    Returns:
+        response: Dict
     """
     # Get text from query parameters
 

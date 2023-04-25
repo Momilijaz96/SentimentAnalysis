@@ -2,6 +2,7 @@
 
 from transformers import AutoTokenizer
 from config.config import logger, MODEL_SAVE_PATH
+from typing import Dict
 
 
 def load_tokenizer(ckpt_path: str) -> AutoTokenizer:
@@ -16,7 +17,7 @@ def load_tokenizer(ckpt_path: str) -> AutoTokenizer:
     return AutoTokenizer.from_pretrained(ckpt_path)
 
 
-def preprocess_data(text: str) -> dict:
+def preprocess_data(text: str) -> Dict:
     """
     Function to preprocess data.
     Args:

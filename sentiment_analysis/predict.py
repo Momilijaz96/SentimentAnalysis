@@ -17,7 +17,9 @@ def load_model_ckpt(modle_ckpt_path: str) -> DistilBertModel:
     """
     Load model from checkpoint
     Args:
+        modle_ckpt_path: str
     Returns:
+        model: DistilBertModel
     """
     logger.info("Loading model from checkpoint")
     return AutoModelForSequenceClassification.from_pretrained(

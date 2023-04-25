@@ -6,6 +6,10 @@ BASE_DIR = Path(__file__).parent
 with open(Path(BASE_DIR, "requirements.txt"), "r") as file:
     required_packages = [ln.strip() for ln in file.readlines()]
 
+
+# Docs packages
+docs_packages = ["mkdocs==1.4.2", "mkdocstrings=0.21.2"]
+
 # Define our package
 setup(
     name="sentiment_analysis",
@@ -16,4 +20,5 @@ setup(
     python_requires=">=3.10",
     packages=find_namespace_packages(),
     install_requires=[required_packages],
+    extras_require={"docs": docs_packages},
 )
