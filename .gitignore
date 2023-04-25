@@ -1,5 +1,4 @@
 saved_model/
 logs/
-docs/
-mkdocs.yml
-
+.DS_Store
+.vscode/
