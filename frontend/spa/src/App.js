@@ -35,10 +35,18 @@ const App = () => {
         onFocus={() => setText("Enter tweet here...")}
       />
       <button onClick={(fetchData)}>Analyze Sentiment</button>
-      <textarea
-        value={error ? error : JSON.stringify(data)}
-        onChange={(e) => setData(e.target.value)}
-      />
+      <br></br>
+      <br></br>
+      <br></br>
+      <br></br>
+      <h2>RESULT:</h2>
+      {error ? (
+        <h3>The tweet reflects {error}</h3>
+      ) : (
+        <>
+          {data && <h3>The tweet reflects {data}</h3>}
+        </>
+      )}
     </div>
   );
 };
