@@ -9,7 +9,8 @@ const App = () => {
 
     const fetchData = async () => {
       try {
-      const response = await fetch("http://127.0.0.1:8000/predict");
+      const body = JSON.stringify({texts: [ {text: text} ]})
+      const response = await fetch("http://localhost:8000/predict",{body: body,method: "POST",headers: {"Content-Type": "application/json"}})
       const data = await response.json();
       console.log(data);
       setData(data);
@@ -17,9 +18,8 @@ const App = () => {
     } catch (error) {
       setError(error.message);
     };
-    fetchData();
-
   };
+
   return (
     <div>
       <h1>Tweet Sentiment Analysis</h1>
@@ -32,7 +32,6 @@ const App = () => {
         type="text"
         value={text}
         onChange={(e) => setText(e.target.value)}
-        onFocus={() => setText("Enter tweet here...")}
       />
       <button onClick={(fetchData)}>Analyze Sentiment</button>
       <br></br>
@@ -41,10 +40,10 @@ const App = () => {
       <br></br>
       <h2>RESULT:</h2>
       {error ? (
-        <h3>The tweet reflects {error}</h3>
+        <h3>{error}</h3>
       ) : (
         <>
-          {data && <h3>The tweet reflects {data}</h3>}
+          {data && <h3>The tweet reflects {data.data.prediction[0]}</h3>}
         </>
       )}
     </div>

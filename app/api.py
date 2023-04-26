@@ -6,6 +6,7 @@ from datetime import datetime
 from functools import wraps
 from sentiment_analysis.main import predict_emotion
 from app.schemas import PredictPayLoad
+from fastapi.middleware.cors import CORSMiddleware
 
 # Define application
 app = FastAPI(
@@ -14,6 +15,16 @@ app = FastAPI(
     version="0.0.1",
 )
 
+# Add CORS headers
+origins = ["*"]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 def construct_response(f):
     """Construct a JSON response for an endpoint."""
@@ -62,7 +73,7 @@ def index(request: Request) -> Dict:
     return response
 
 
-@app.get("/predict")
+@app.post("/predict")
 @construct_response
 def predict_sentiment(request: Request, payload: PredictPayLoad) -> Dict:
     """
@@ -74,7 +85,6 @@ def predict_sentiment(request: Request, payload: PredictPayLoad) -> Dict:
         response: Dict
     """
     # Get text from query parameters
-
     texts = [item.text for item in payload.texts]
     if texts is None:
         response = {
