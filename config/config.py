@@ -4,6 +4,8 @@ from pathlib import Path
 import logging
 import sys
 import os
+from dynaconf import Dynaconf
+
 
 # Directories
 BASE_DIR = Path(__file__).resolve().parent.parent.absolute()
@@ -15,7 +17,7 @@ label2id = {"sadness": 0, "joy": 1, "love": 2, "anger": 3, "fear": 4, "surprise"
 
 id2label = {v: k for k, v in label2id.items()}
 
-# DB connection string
+# MONGO DB connection string
 mongodb_password = os.environ["MONGODB_PASSWORD"]
 mongodb_username = os.environ["MONGODB_USERNAME"]
 CLUSTER_NAME = "tweetstentiment"
@@ -23,6 +25,18 @@ DB_NAME = "tweets_db"
 COLLECTION_NAME = "tweets_collection"
 
 DB_CONNECTION_STRING = f"mongodb+srv://{mongodb_username}:{mongodb_password}@{CLUSTER_NAME}.uaunqgg.mongodb.net/{DB_NAME}?retryWrites=true&w=majority"
+
+# Redis connection for API2Model message queue
+REDIS_HOST = "redis-17442.c16.us-east-1-2.ec2.cloud.redislabs.com"
+REDIS_PORT = 17442
+REDIS_DB = "API2Model-Queue"
+REDIS_QUEUE_NAME = "api2model"
+REDIS_USERNAME = "default"
+REDIS_PASSWORD = "sqm18hv0ZKeYQ7cOyg6Y2SEcPzGHAMhN"
+REDIS_URL = (
+    f"redis://{REDIS_USERNAME}:{REDIS_PASSWORD}@{REDIS_HOST}:{REDIS_PORT}/{REDIS_DB}"
+)
+
 
 # Set logging configurations
 LOGS_DIR = Path(BASE_DIR, "logs")

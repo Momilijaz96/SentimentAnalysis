@@ -81,7 +81,7 @@ def index(request: Request) -> Dict:
 
 @app.post("/predict")
 @construct_response
-def predict_sentiment(request: Request, payload: PredictPayLoad) -> Dict:
+async def predict_sentiment(request: Request, payload: PredictPayLoad) -> Dict:
     """
     Predict sentiment of the given tweet text.
     Args:
@@ -101,25 +101,25 @@ def predict_sentiment(request: Request, payload: PredictPayLoad) -> Dict:
         return response
 
     # Predict sentiment
-    prediction = predict_emotion(texts)
+    prediction = predict_emotion.delay(texts)
 
     # Store result in MongoDB
-    for text, p in zip(texts, prediction):
-        doc = {
-            "tweet": text,
-            "prediction": p,
-            "created_at": datetime.now().isoformat(),
-        }
+    # for text, p in zip(texts, prediction):
+    #     doc = {
+    #         "tweet": text,
+    #         "prediction": p,
+    #         "created_at": datetime.now().isoformat(),
+    #     }
 
-        status = mongo_utils.insert_doc(doc)
-        if status:
-            logger.info(f"Inserted document with id: {status}")
-        else:
-            logger.warning("Error while inserting document in MongoDB")
+    #     status = mongo_utils.insert_doc(doc)
+    #     if status:
+    #         logger.info(f"Inserted document with id: {status}")
+    #     else:
+    #         logger.warning("Error while inserting document in MongoDB")
 
     response = {
         "message": "Sentiment prediction successful",
         "status-code": HTTPStatus.OK,
-        "data": {"prediction": prediction},
+        "data": {"prediction": prediction.id},
     }
     return response
