@@ -1,5 +1,9 @@
 # Main function calls for the sentiment analysis
-from .predict import predict_sentiment, load_model_ckpt
+
+import sys
+
+sys.path.append("../SENTIMENTANALYSIS")
+from sentiment_analysis.predict import predict_sentiment, load_model_ckpt
 from config.config import logger, MODEL_SAVE_PATH
 
 
@@ -15,3 +19,6 @@ def predict_emotion(text: str) -> str:
     model = load_model_ckpt(MODEL_SAVE_PATH)
     prediction = predict_sentiment(model, text)
     return prediction
+
+
+# predict_emotion(["I am happy", "I am sad"])

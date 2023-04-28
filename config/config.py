@@ -14,6 +14,9 @@ label2id = {"sadness": 0, "joy": 1, "love": 2, "anger": 3, "fear": 4, "surprise"
 
 id2label = {v: k for k, v in label2id.items()}
 
+# DB connection string
+DB_CONNECTION_STRING = "mongodb+srv://MomalIjaz:<RKvCezMGr2Fnpyxt>@tweetssentiment.uaunqgg.mongodb.net/test"
+DB_NAME = "TweetsSentiment"
 
 # Set logging configurations
 LOGS_DIR = Path(BASE_DIR, "logs")
@@ -57,5 +60,5 @@ logging_config = {
         "propagate": True,
     },
 }
-logging.config.dictConfig(logging_config)
+# logging.config.dictConfig(logging_config)
 logger = logging.getLogger()

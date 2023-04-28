@@ -7,7 +7,7 @@ from transformers import (
 import torch
 
 
-from .data import preprocess_data
+from sentiment_analysis.data import preprocess_data
 from config.config import logger, label2id, id2label
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -39,7 +39,7 @@ def predict_sentiment(model: DistilBertModel, text: str) -> int:
     """
     encodings = preprocess_data(text)
     outputs = model(**encodings)
-    predictions = (outputs.logits.argmax(-1).squeeze().tolist())
+    predictions = outputs.logits.argmax(-1).squeeze().tolist()
     if isinstance(predictions, int):
         predictions = [predictions]
     prediction_labels = [model.config.id2label[p] for p in predictions]

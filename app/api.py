@@ -7,6 +7,11 @@ from functools import wraps
 from sentiment_analysis.main import predict_emotion
 from app.schemas import PredictPayLoad
 from fastapi.middleware.cors import CORSMiddleware
+from mongo_db import utils
+from config.config import logger
+import sys
+
+sys.path.append("../SENTIMENTANALYSIS")
 
 # Define application
 app = FastAPI(
@@ -25,6 +30,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 
 def construct_response(f):
     """Construct a JSON response for an endpoint."""
@@ -93,8 +99,21 @@ def predict_sentiment(request: Request, payload: PredictPayLoad) -> Dict:
             "data": {},
         }
         return response
+
     # Predict sentiment
     prediction = predict_emotion(texts)
+
+    # Store result in MongoDB
+    # for text, prediction in zip(texts, prediction):
+    #     doc = {
+    #         "tweet": text,
+    #         "prediction": prediction,
+    #         "created_at": datetime.now().isoformat(),
+    #     }
+
+    #     status = utils.insert_doc(doc)
+    #     logger.info(f"Inserted document with id: {status}")
+
     response = {
         "message": "Sentiment prediction successful",
         "status-code": HTTPStatus.OK,

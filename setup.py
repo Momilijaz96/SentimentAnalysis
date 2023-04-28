@@ -10,6 +10,9 @@ with open(Path(BASE_DIR, "requirements.txt"), "r") as file:
 # Docs packages
 docs_packages = ["mkdocs==1.4.2", "mkdocstrings=0.21.2"]
 
+# DB packages
+db_packages = ["pymongo==4.3.3"]
+
 # Define our package
 setup(
     name="sentiment_analysis",
@@ -20,5 +23,6 @@ setup(
     python_requires=">=3.10",
     packages=find_namespace_packages(),
     install_requires=[required_packages],
-    extras_require={"docs": docs_packages},
+    extras_require={"docs": docs_packages,
+                    "db": db_packages},
 )
