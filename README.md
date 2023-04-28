@@ -26,5 +26,6 @@ uvicorn app.api:app \
 ### React server
 
 ```bash
+cd frontend/spa
 npm start
 ```

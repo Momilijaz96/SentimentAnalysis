@@ -104,15 +104,18 @@ def predict_sentiment(request: Request, payload: PredictPayLoad) -> Dict:
     prediction = predict_emotion(texts)
 
     # Store result in MongoDB
-    for text, prediction in zip(texts, prediction):
+    for text, p in zip(texts, prediction):
         doc = {
             "tweet": text,
-            "prediction": prediction,
+            "prediction": p,
             "created_at": datetime.now().isoformat(),
         }
 
         status = mongo_utils.insert_doc(doc)
-        logger.info(f"Inserted document with id: {status}")
+        if status:
+            logger.info(f"Inserted document with id: {status}")
+        else:
+            logger.warning("Error while inserting document in MongoDB")
 
     response = {
         "message": "Sentiment prediction successful",

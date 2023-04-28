@@ -5,22 +5,31 @@ import sys
 
 sys.path.append("../SENTIMENTANALYSIS")
 
-from config.config import DB_CONNECTION_STRING, DB_NAME
+from config.config import DB_CONNECTION_STRING, DB_NAME, COLLECTION_NAME
 import time
 from pymongo import MongoClient
 
 
 def connect():
-    # Connect to the MongoDB server
-    client = MongoClient(DB_CONNECTION_STRING)
+    try:
+        # Connect to the MongoDB server
+        print("DB Connection string: " + DB_CONNECTION_STRING)
+        client = MongoClient(DB_CONNECTION_STRING)
 
-    # Get the database you want to create the collection in
-    db = client[DB_NAME]
+        # Get the database you want to create the collection in
+        db = client[DB_NAME]
+        if COLLECTION_NAME not in client[DB_NAME].list_collection_names():
+            print("Collection does not exist")
+            collection = db.create_collection(COLLECTION_NAME)
+        else:
+            print("Collection exists")
+            collection = client[DB_NAME][COLLECTION_NAME]
 
-    # Create a new collection called 'tweets'
-    collection = db.create_collection("tweets")
+        return collection
 
-    return collection
+    except Exception as e:
+        print("Error while connecting to MongoDB", e)
+        return None
 
 
 def insert_doc(doc):
@@ -33,13 +42,15 @@ def insert_doc(doc):
     """
 
     collection = connect()
+    if collection is not None:
+        result = collection.insert_one(doc)
 
-    result = collection.insert_one(doc)
+        # Get the inserted document from the collection
+        inserted_tweet = collection.find_one({"_id": result.inserted_id})
 
-    # Get the inserted document from the collection
-    inserted_tweet = collection.find_one({"_id": result.inserted_id})
+        # Print the inserted document
+        print(inserted_tweet)
 
-    # Print the inserted document
-    print(inserted_tweet)
-
-    return result.inserted_id
+        return result.inserted_id
+    else:
+        return None

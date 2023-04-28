@@ -1,5 +1,4 @@
 # Main function calls for the sentiment analysis
-
 import sys
 
 sys.path.append("../SENTIMENTANALYSIS")
@@ -18,6 +17,8 @@ def predict_emotion(text: str) -> str:
     logger.info("Predicting sentiment of given text")
     model = load_model_ckpt(MODEL_SAVE_PATH)
     prediction = predict_sentiment(model, text)
+    if not isinstance(prediction, list):
+        prediction = [prediction]
     return prediction
 
 

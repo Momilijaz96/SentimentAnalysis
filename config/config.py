@@ -18,14 +18,11 @@ id2label = {v: k for k, v in label2id.items()}
 # DB connection string
 mongodb_password = os.environ["MONGODB_PASSWORD"]
 mongodb_username = os.environ["MONGODB_USERNAME"]
-DB_CONNECTION_STRING = (
-    "mongodb+srv://"
-    + mongodb_username
-    + ":<"
-    + mongodb_password
-    + ">@tweetssentiment.uaunqgg.mongodb.net/test"
-)
-DB_NAME = "TweetsSentiment"
+CLUSTER_NAME = "tweetstentiment"
+DB_NAME = "tweets_db"
+COLLECTION_NAME = "tweets_collection"
+
+DB_CONNECTION_STRING = f"mongodb+srv://MomalIjaz:{mongodb_password}@{CLUSTER_NAME}.uaunqgg.mongodb.net/{DB_NAME}?retryWrites=true&w=majority"
 
 # Set logging configurations
 LOGS_DIR = Path(BASE_DIR, "logs")
