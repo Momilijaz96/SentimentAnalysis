@@ -3,6 +3,7 @@
 from pathlib import Path
 import logging
 import sys
+import os
 
 # Directories
 BASE_DIR = Path(__file__).resolve().parent.parent.absolute()
@@ -15,7 +16,15 @@ label2id = {"sadness": 0, "joy": 1, "love": 2, "anger": 3, "fear": 4, "surprise"
 id2label = {v: k for k, v in label2id.items()}
 
 # DB connection string
-DB_CONNECTION_STRING = "mongodb+srv://MomalIjaz:<RKvCezMGr2Fnpyxt>@tweetssentiment.uaunqgg.mongodb.net/test"
+mongodb_password = os.environ["MONGODB_PASSWORD"]
+mongodb_username = os.environ["MONGODB_USERNAME"]
+DB_CONNECTION_STRING = (
+    "mongodb+srv://"
+    + mongodb_username
+    + ":<"
+    + mongodb_password
+    + ">@tweetssentiment.uaunqgg.mongodb.net/test"
+)
 DB_NAME = "TweetsSentiment"
 
 # Set logging configurations

@@ -7,7 +7,7 @@ from functools import wraps
 from sentiment_analysis.main import predict_emotion
 from app.schemas import PredictPayLoad
 from fastapi.middleware.cors import CORSMiddleware
-from mongo_db import utils
+from mongo_db import utils as mongo_utils
 from config.config import logger
 import sys
 
@@ -104,15 +104,15 @@ def predict_sentiment(request: Request, payload: PredictPayLoad) -> Dict:
     prediction = predict_emotion(texts)
 
     # Store result in MongoDB
-    # for text, prediction in zip(texts, prediction):
-    #     doc = {
-    #         "tweet": text,
-    #         "prediction": prediction,
-    #         "created_at": datetime.now().isoformat(),
-    #     }
+    for text, prediction in zip(texts, prediction):
+        doc = {
+            "tweet": text,
+            "prediction": prediction,
+            "created_at": datetime.now().isoformat(),
+        }
 
-    #     status = utils.insert_doc(doc)
-    #     logger.info(f"Inserted document with id: {status}")
+        status = mongo_utils.insert_doc(doc)
+        logger.info(f"Inserted document with id: {status}")
 
     response = {
         "message": "Sentiment prediction successful",
