@@ -4,6 +4,11 @@ import sys
 sys.path.append("../SENTIMENTANALYSIS")
 from sentiment_analysis.predict import predict_sentiment, load_model_ckpt
 from config.config import logger, MODEL_SAVE_PATH
+from celery import Celery
+
+app = Celery(
+    "worker",
+)
 
 
 def predict_emotion(text: str) -> str:

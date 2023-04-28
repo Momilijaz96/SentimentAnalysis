@@ -22,7 +22,7 @@ CLUSTER_NAME = "tweetstentiment"
 DB_NAME = "tweets_db"
 COLLECTION_NAME = "tweets_collection"
 
-DB_CONNECTION_STRING = f"mongodb+srv://MomalIjaz:{mongodb_password}@{CLUSTER_NAME}.uaunqgg.mongodb.net/{DB_NAME}?retryWrites=true&w=majority"
+DB_CONNECTION_STRING = f"mongodb+srv://{mongodb_username}:{mongodb_password}@{CLUSTER_NAME}.uaunqgg.mongodb.net/{DB_NAME}?retryWrites=true&w=majority"
 
 # Set logging configurations
 LOGS_DIR = Path(BASE_DIR, "logs")
