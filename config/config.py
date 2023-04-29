@@ -33,9 +33,7 @@ REDIS_DB = "API2Model-Queue"
 REDIS_QUEUE_NAME = "api2model"
 REDIS_USERNAME = "default"
 REDIS_PASSWORD = "sqm18hv0ZKeYQ7cOyg6Y2SEcPzGHAMhN"
-REDIS_URL = (
-    f"redis://{REDIS_USERNAME}:{REDIS_PASSWORD}@{REDIS_HOST}:{REDIS_PORT}/{REDIS_DB}"
-)
+REDIS_URL = f"redis://:{REDIS_PASSWORD}@{REDIS_HOST}:{REDIS_PORT}"
 
 
 # Set logging configurations

@@ -3,6 +3,7 @@
 ```bash
 conda create -n sa_env
 conda activate sa_env
+conda install --file requirements.txt
 ```
 
 ### Documentation

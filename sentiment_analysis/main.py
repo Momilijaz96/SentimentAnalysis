@@ -3,14 +3,10 @@ import sys
 
 sys.path.append("../SENTIMENTANALYSIS")
 from sentiment_analysis.predict import predict_sentiment, load_model_ckpt
-from config.config import logger, MODEL_SAVE_PATH, REDIS_URL
-from celery import Celery
+from config.config import logger, MODEL_SAVE_PATH
 from typing import List
 
-celery_app = Celery("worker", broker=REDIS_URL)
 
-
-@celery_app.task
 def predict_emotion(text: List[str]) -> List:
     """
     Predict sentiment of given single sentence

@@ -4,7 +4,7 @@ from http import HTTPStatus
 from typing import Dict
 from datetime import datetime
 from functools import wraps
-from sentiment_analysis.main import predict_emotion
+from celery_worker.worker import predict
 from app.schemas import PredictPayLoad
 from fastapi.middleware.cors import CORSMiddleware
 from mongo_db import utils as mongo_utils
@@ -101,7 +101,7 @@ async def predict_sentiment(request: Request, payload: PredictPayLoad) -> Dict:
         return response
 
     # Predict sentiment
-    prediction = predict_emotion.delay(texts)
+    prediction = predict.delay(texts)
 
     # Store result in MongoDB
     # for text, p in zip(texts, prediction):
