@@ -37,7 +37,7 @@ def construct_response(f):
     """Construct a JSON response for an endpoint."""
 
     @wraps(f)
-    def wrap(request: Request, *args, **kwargs) -> Dict:
+    async def wrap(request: Request, *args, **kwargs) -> Dict:
         """
         Function to wrap response of other endpoints in a JSON response.
         Args:
@@ -47,7 +47,7 @@ def construct_response(f):
         Returns:
             response: Dict
         """
-        results = f(request, *args, **kwargs)
+        results = await f(request, *args, **kwargs)
         response = {
             "message": results["message"],
             "method": request.method,
@@ -81,7 +81,7 @@ def index(request: Request) -> Dict:
 
 
 @app.post("/predict")
-# @construct_response
+@construct_response
 async def predict_sentiment(request: Request, payload: PredictPayLoad) -> Dict:
     """
     Predict sentiment of the given tweet text.
@@ -103,6 +103,7 @@ async def predict_sentiment(request: Request, payload: PredictPayLoad) -> Dict:
 
     # Predict sentiment
     result = predict.delay(texts)
+
     prediction = result.get()  # Block for result to be shown
 
     # Store result in MongoDB
