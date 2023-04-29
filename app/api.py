@@ -10,6 +10,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from mongo_db import utils as mongo_utils
 from config.config import logger
 import sys
+from celery.result import AsyncResult
 
 sys.path.append("../SENTIMENTANALYSIS")
 
@@ -80,7 +81,7 @@ def index(request: Request) -> Dict:
 
 
 @app.post("/predict")
-@construct_response
+# @construct_response
 async def predict_sentiment(request: Request, payload: PredictPayLoad) -> Dict:
     """
     Predict sentiment of the given tweet text.
@@ -101,7 +102,8 @@ async def predict_sentiment(request: Request, payload: PredictPayLoad) -> Dict:
         return response
 
     # Predict sentiment
-    prediction = predict.delay(texts)
+    result = predict.delay(texts)
+    prediction = result.get()  # Block for result to be shown
 
     # Store result in MongoDB
     # for text, p in zip(texts, prediction):
@@ -120,6 +122,6 @@ async def predict_sentiment(request: Request, payload: PredictPayLoad) -> Dict:
     response = {
         "message": "Sentiment prediction successful",
         "status-code": HTTPStatus.OK,
-        "data": {"prediction": prediction.id},
+        "data": {"prediction": prediction},
     }
     return response
