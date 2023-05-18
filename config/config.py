@@ -7,6 +7,13 @@ import os
 from dynaconf import Dynaconf
 
 
+def get_env(env_name: str) -> str:
+    try:
+        return os.environ[env_name]
+    except KeyError:
+        raise Exception(f"Environment variable {env_name} not set.")
+
+
 # Directories
 BASE_DIR = Path(__file__).resolve().parent.parent.absolute()
 CONFIG_DIR = Path(BASE_DIR / "config")
@@ -18,21 +25,21 @@ label2id = {"sadness": 0, "joy": 1, "love": 2, "anger": 3, "fear": 4, "surprise"
 id2label = {v: k for k, v in label2id.items()}
 
 # MONGO DB connection string
-mongodb_password = "MomalIjaz"  # os.environ["MONGODB_PASSWORD"]
-mongodb_username = "RKvCezMGr2Fnpyxt"  # os.environ["MONGODB_USERNAME"]
-CLUSTER_NAME = "tweetstentiment"
-DB_NAME = "tweets_db"
-COLLECTION_NAME = "tweets_collection"
+mongodb_password = get_env("MONGODB_PASSWORD")
+mongodb_username = get_env("MONGODB_USERNAME")
+CLUSTER_NAME = get_env("CLUSTER_NAME")
+DB_NAME = get_env("DB_NAME")
+COLLECTION_NAME = get_env("COLLECTION_NAME")
 
 DB_CONNECTION_STRING = f"mongodb+srv://{mongodb_username}:{mongodb_password}@{CLUSTER_NAME}.uaunqgg.mongodb.net/{DB_NAME}?retryWrites=true&w=majority"
 
 # Redis connection for API2Model message queue
-REDIS_HOST = "redis-17442.c16.us-east-1-2.ec2.cloud.redislabs.com"
-REDIS_PORT = 17442
-REDIS_DB = "API2Model-Queue"
-REDIS_QUEUE_NAME = "api2model"
-REDIS_USERNAME = "default"
-REDIS_PASSWORD = "sqm18hv0ZKeYQ7cOyg6Y2SEcPzGHAMhN"
+REDIS_HOST = get_env("REDIS_HOST")
+REDIS_PORT = get_env("REDIS_PORT")
+REDIS_DB = get_env("REDIS_DB")
+REDIS_QUEUE_NAME = get_env("REDIS_QUEUE_NAME")
+REDIS_USERNAME = get_env("REDIS_USERNAME")
+REDIS_PASSWORD = get_env("REDIS_PASSWORD")
 REDIS_URL = f"redis://:{REDIS_PASSWORD}@{REDIS_HOST}:{REDIS_PORT}"
 
 

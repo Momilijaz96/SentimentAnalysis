@@ -2,4 +2,4 @@ saved_model/
 logs/
 .DS_Store
 .vscode/
-config/config.env
+config/env/*
