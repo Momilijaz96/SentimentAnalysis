@@ -1,14 +1,19 @@
 # Declare API endpoints for interacting with model/sentiment_analysis
+import sys
+
+sys.path.append("..")  # for parent folder visibility
+
+
 from fastapi import FastAPI, Request
 from http import HTTPStatus
 from typing import Dict
 from datetime import datetime
 from functools import wraps
-from celery_worker.worker import predict
-from app.schemas import PredictPayLoad
+from celery_worker import worker
+from modelapi.schemas import PredictPayLoad
 from fastapi.middleware.cors import CORSMiddleware
 from mongo_db import utils as mongo_utils
-from config.config import logger
+from config.config import logger, REDIS_URL
 import sys
 from celery.result import AsyncResult
 
@@ -19,6 +24,7 @@ app = FastAPI(
     title="Sentiment Analysis API",
     description="API for sentiment analysis model",
     version="0.0.1",
+    broker=REDIS_URL,
 )
 
 # Add CORS headers
@@ -102,7 +108,7 @@ async def predict_sentiment(request: Request, payload: PredictPayLoad) -> Dict:
         return response
 
     # Predict sentiment
-    result = predict.delay(texts)
+    result = worker.predict.delay(texts)
 
     prediction = result.get()  # Block for result to be shown
 

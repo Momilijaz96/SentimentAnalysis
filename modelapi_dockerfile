@@ -1,0 +1,43 @@
+# # Build stage for model's celery_worker container, to be imported in FastAPI image
+# FROM python:3.11-slim AS model_worker
+
+# WORKDIR /app
+
+# COPY model/requirements.txt .
+
+# RUN pip install --upgrade pip
+
+# RUN pip install -r requirements.txt
+
+# COPY model/ /app/model
+
+# COPY config/ /app/config
+
+# WORKDIR /app/model/celery_worker
+
+# CMD ["celery", "-A", "worker.app", "worker", "--loglevel=info"]
+
+# Build stage for FastAPI server
+FROM python:3.11-slim AS model_api
+
+WORKDIR /app
+
+COPY requirements/requirements_modelapi.txt .
+
+RUN pip install -r requirements_modelapi.txt
+
+COPY config/ /app/config
+
+COPY mongo_db /app/mongo_db
+
+COPY modelapi /app/modelapi
+
+COPY celery_worker /app/celery_worker
+
+COPY sentiment_analysis /app/sentiment_analysis
+
+COPY saved_model /app/saved_model
+
+EXPOSE 8000
+
+CMD ["uvicorn", "modelapi.api:app", "--host", "0.0.0.0", "--port", "8000"]

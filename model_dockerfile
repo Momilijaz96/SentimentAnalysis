@@ -1,0 +1,19 @@
+FROM python:3.11-slim
+
+WORKDIR /app
+
+COPY requirements/requirements_model.txt .
+
+RUN pip install --upgrade pip
+
+RUN pip install -r requirements_model.txt
+
+COPY config/ /app/config
+
+COPY celery_worker /app/celery_worker
+
+COPY sentiment_analysis /app/sentiment_analysis
+
+COPY saved_model /app/saved_model
+
+CMD ["celery", "-A", "celery_worker.worker", "worker", "--loglevel=info"]

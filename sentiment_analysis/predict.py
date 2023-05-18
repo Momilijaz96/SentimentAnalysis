@@ -7,7 +7,7 @@ from transformers import (
 import torch
 
 
-from sentiment_analysis.data import preprocess_data
+from .data import preprocess_data
 from config.config import logger, label2id, id2label
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")

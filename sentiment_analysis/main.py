@@ -1,8 +1,9 @@
 # Main function calls for the sentiment analysis
 import sys
 
-sys.path.append("../SENTIMENTANALYSIS")
-from sentiment_analysis.predict import predict_sentiment, load_model_ckpt
+sys.path.append("..")  # for parent folder visibility
+
+from .predict import predict_sentiment, load_model_ckpt
 from config.config import logger, MODEL_SAVE_PATH
 from typing import List
 

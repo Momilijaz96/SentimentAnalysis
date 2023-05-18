@@ -18,8 +18,8 @@ label2id = {"sadness": 0, "joy": 1, "love": 2, "anger": 3, "fear": 4, "surprise"
 id2label = {v: k for k, v in label2id.items()}
 
 # MONGO DB connection string
-mongodb_password = os.environ["MONGODB_PASSWORD"]
-mongodb_username = os.environ["MONGODB_USERNAME"]
+mongodb_password = "MomalIjaz"  # os.environ["MONGODB_PASSWORD"]
+mongodb_username = "RKvCezMGr2Fnpyxt"  # os.environ["MONGODB_USERNAME"]
 CLUSTER_NAME = "tweetstentiment"
 DB_NAME = "tweets_db"
 COLLECTION_NAME = "tweets_collection"
