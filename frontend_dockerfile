@@ -2,11 +2,11 @@ FROM node:16.8-slim
 
 WORKDIR /app
 
-COPY package.json .
+COPY frontend/spa/package.json .
 
 RUN npm install
 
-COPY . .
+COPY frontend/spa .
 
 EXPOSE 3000
 

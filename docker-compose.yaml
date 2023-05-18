@@ -1,0 +1,21 @@
+version: "3"
+
+services:
+  modelapi:
+    build:
+      context: .
+      dockerfile: modelapi_dockerfile
+    ports: 
+      - "8000:8000"
+  modelworker:
+    build: 
+      context: .
+      dockerfile: model_dockerfile
+  frontend:
+    build: 
+      context: .
+      dockerfile: frontend_dockerfile
+    ports: 
+      - "3000:3000"
+
+    
