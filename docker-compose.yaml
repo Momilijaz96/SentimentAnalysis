@@ -1,5 +1,4 @@
 version: "3"
-
 services:
   modelapi:
     build:
@@ -17,5 +16,8 @@ services:
       dockerfile: frontend_dockerfile
     ports: 
       - "3000:3000"
+    environment:
+      - MODELAPI_SERVICE_PORT : 8000
+      - MODELAPI_SERVICE_HOST : modelapi
 
     

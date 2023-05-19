@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: modelworker-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: modelworker
+  template:
+    metadata:
+      labels:
+        app: modelworker
+    spec:
+      containers:
+        - name: modelworker
+          image: momil56/sentiment_analysis:modelworker
+          envFrom:
+            - configMapRef:
+                name: queue-configmap

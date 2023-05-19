@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: modelapi-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: modelapi
+  template:
+    metadata:
+      labels:
+        app: modelapi
+    spec:
+      containers:
+        - name: modelapi
+          image: momil56/sentiment_analysis:modelapi
+          envFrom:
+            - configMapRef:
+                name: storage-configmap
+            - configMapRef:
+                name: queue-configmap
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: modelapi-service
+spec:
+  selector:
+    app: modelapi
+  type: ClusterIP
+  ports:
+    - protocol: TCP
+      port: 8000
+      targetPort: 8000
