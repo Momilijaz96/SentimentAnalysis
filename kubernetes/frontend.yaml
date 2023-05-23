@@ -18,6 +18,7 @@ spec:
           envFrom:
             - configMapRef:
                 name: modelapi-configmap
+          imagePullPolicy: Always
 
 ---
 apiVersion: v1

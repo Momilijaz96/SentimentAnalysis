@@ -10,9 +10,9 @@ const App = () => {
     const fetchData = async () => {
       try {
       const body = JSON.stringify({texts: [ {text: text} ]})
-      const modelapi_service_address = process.env.MODELAPI_SERVICE_ADDRESS
-      const modelapi_serivce_port = process.env.MODELAPI_SERVICE_PORT
-      const modelapi_service = "http://" + modelapi_service_address + ":" + modelapi_serivce_port + "/predict" 
+      // const modelapi_service = `http://${process.env.MODELAPI_SERVICE_ADDRESS}:${process.env.MODELAPI_SERVICE_PORT}/predict`
+      const modelapi_service = 'http://modelapi-service.default.svc.cluster.local:8000/predict'
+      console.log(modelapi_service)
       const response = await fetch(modelapi_service,{body: body,method: "POST",headers: {"Content-Type": "application/json"}})
       const data = await response.json();
       console.log(data);
