@@ -28,11 +28,11 @@ RUN pip install -r requirements_modelapi.txt
 
 COPY config/ /app/config
 
-COPY mongo_db /app/mongo_db
+COPY mongo_db/ /app/mongo_db
 
-COPY modelapi /app/modelapi
+COPY modelapi/ /app/modelapi
 
-COPY celery_worker /app/celery_worker
+COPY celery_worker/ /app/celery_worker
 
 COPY sentiment_analysis /app/sentiment_analysis
 

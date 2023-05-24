@@ -1,6 +1,5 @@
 # The script for adding a record in MongoDB.
 
-
 import sys
 
 sys.path.append("../SENTIMENTANALYSIS")
@@ -11,18 +10,19 @@ from pymongo import MongoClient
 
 
 def connect():
+    print("DB Connection string: " + DB_CONNECTION_STRING)
     try:
         # Connect to the MongoDB server
-        logger.info("DB Connection string: " + DB_CONNECTION_STRING)
         client = MongoClient(DB_CONNECTION_STRING)
         logger.info("Connected successfully!!!")
         # Get the database you want to create the collection in
         db = client[DB_NAME]
         if COLLECTION_NAME not in client[DB_NAME].list_collection_names():
-            logger.info("Collection does not exist")
+            logger.info(
+                "Collection does not exist..Creating new collection: " + COLLECTION_NAME
+            )
             collection = db.create_collection(COLLECTION_NAME)
         else:
-            logger.error("Collection exists")
             collection = client[DB_NAME][COLLECTION_NAME]
 
         return collection

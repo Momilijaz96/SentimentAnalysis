@@ -15,11 +15,12 @@ spec:
       containers:
         - name: frontend
           image: momil56/sentiment_analysis:frontend
+          ports:
+            - containerPort: 3000
           envFrom:
             - configMapRef:
                 name: modelapi-configmap
           imagePullPolicy: Always
-
 ---
 apiVersion: v1
 kind: Service

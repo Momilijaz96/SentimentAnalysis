@@ -69,7 +69,7 @@ def construct_response(f):
 
 
 @app.get("/")
-@construct_response
+# @construct_response
 def index(request: Request) -> Dict:
     """
     Health check endpoint.
@@ -78,6 +78,7 @@ def index(request: Request) -> Dict:
     Returns:
         response: Dict
     """
+    logger.info(request)
     response = {
         "message": "Sentiment Analysis API is up and running",
         "status-code": HTTPStatus.OK,
@@ -87,7 +88,7 @@ def index(request: Request) -> Dict:
 
 
 @app.post("/predict")
-@construct_response
+# @construct_response
 async def predict_sentiment(request: Request, payload: PredictPayLoad) -> Dict:
     """
     Predict sentiment of the given tweet text.
