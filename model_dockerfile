@@ -16,4 +16,6 @@ COPY sentiment_analysis /app/sentiment_analysis
 
 COPY saved_model /app/saved_model
 
+RUN chmod +x /usr/local/bin/celery
+
 CMD ["celery", "-A", "celery_worker.worker", "worker", "--loglevel=info"]

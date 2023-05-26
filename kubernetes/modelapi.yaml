@@ -15,8 +15,6 @@ spec:
       containers:
         - name: modelapi
           image: momil56/sentiment_analysis:modelapi
-          ports:
-            - containerPort: 8000
           envFrom:
             - configMapRef:
                 name: storage-configmap
@@ -31,7 +29,7 @@ metadata:
 spec:
   selector:
     app: modelapi
-  type: ClusterIP
+  type: LoadBalancer
   ports:
     - protocol: TCP
       port: 8000

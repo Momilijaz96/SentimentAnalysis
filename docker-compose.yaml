@@ -6,18 +6,24 @@ services:
       dockerfile: modelapi_dockerfile
     ports: 
       - "8000:8000"
+    env_file:
+      - env/mongo.env
+      - env/queue.env
+
   modelworker:
     build: 
       context: .
       dockerfile: model_dockerfile
+    env_file:
+      - env/mongo.env
+      - env/queue.env
+
   frontend:
     build: 
       context: .
       dockerfile: frontend_dockerfile
     ports: 
       - "3000:3000"
-    environment:
-      - MODELAPI_SERVICE_PORT : 8000
-      - MODELAPI_SERVICE_HOST : modelapi
-
+    env_file:
+      - env/modelapi.env
     

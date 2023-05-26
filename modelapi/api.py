@@ -133,3 +133,4 @@ async def predict_sentiment(request: Request, payload: PredictPayLoad) -> Dict:
         "data": {"prediction": prediction},
     }
     return response
+

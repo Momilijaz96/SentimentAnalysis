@@ -11,7 +11,8 @@ const App = () => {
       try {
       const body = JSON.stringify({texts: [ {text: text} ]})
       // const modelapi_service = `http://${process.env.MODELAPI_SERVICE_ADDRESS}:${process.env.MODELAPI_SERVICE_PORT}/predict`
-      const modelapi_service = 'http://modelapi-service.default.svc.cluster.local:8000/predict'
+      // const modelapi_service = 'http://modelapi-service.default:8000/predict'
+      const modelapi_service = 'http://a4bab88ce3ecc4d49987983c22eb6317-1386881726.ap-south-1.elb.amazonaws.com:8000/predict'
       console.log(modelapi_service)
       const response = await fetch(modelapi_service,{body: body,method: "POST",headers: {"Content-Type": "application/json"}})
       const data = await response.json();
