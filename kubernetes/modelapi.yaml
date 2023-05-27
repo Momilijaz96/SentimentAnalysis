@@ -29,7 +29,7 @@ metadata:
 spec:
   selector:
     app: modelapi
-  type: LoadBalancer
+  type: ClusterIP
   ports:
     - protocol: TCP
       port: 8000
