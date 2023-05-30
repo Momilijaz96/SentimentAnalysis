@@ -5,9 +5,8 @@ import sys
 sys.path.append("..")
 
 from config.config import DB_CONNECTION_STRING, DB_NAME, COLLECTION_NAME, logger
-import time
 from pymongo import MongoClient
-
+from typing import Dict
 
 def connect():
     print("DB Connection string: " + DB_CONNECTION_STRING)
@@ -35,7 +34,7 @@ def connect():
         return None
 
 
-def insert_doc(doc):
+def insert_doc(doc:Dict):
     """
     Function to insert record in MongoDB's collection.
     Args:
@@ -43,7 +42,16 @@ def insert_doc(doc):
     Returns:
         status(bool): Boolean to reflect if the record is inserted or not
     """
-
+    if doc is None:
+        print("Please provide a document to insert")
+        return None
+    elif not isinstance(doc, dict):
+        print("Please provide a valid document to insert")
+        return None
+    elif not all(key in doc for key in ["tweet", "prediction", "created_at"]):
+        print("Document to be inserted missing a key, Received: ", doc)
+        return None
+    
     collection = connect()
     if collection is not None:
         try:
@@ -54,6 +62,7 @@ def insert_doc(doc):
             print("Inserted document: " + str(inserted_tweet))
 
             return result.inserted_id
+        
         except Exception as e:
             print("Error while inserting document in MongoDB", e)
             return None

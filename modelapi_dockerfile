@@ -1,23 +1,3 @@
-# # Build stage for model's celery_worker container, to be imported in FastAPI image
-# FROM python:3.11-slim AS model_worker
-
-# WORKDIR /app
-
-# COPY model/requirements.txt .
-
-# RUN pip install --upgrade pip
-
-# RUN pip install -r requirements.txt
-
-# COPY model/ /app/model
-
-# COPY config/ /app/config
-
-# WORKDIR /app/model/celery_worker
-
-# CMD ["celery", "-A", "worker.app", "worker", "--loglevel=info"]
-
-# Build stage for FastAPI server
 FROM python:3.11-slim AS model_api
 
 WORKDIR /app
@@ -28,11 +8,11 @@ RUN pip install -r requirements_modelapi.txt
 
 COPY config/ /app/config
 
-COPY mongo_db/ /app/mongo_db
+COPY storage/ /app/storage
+
+COPY storage_worker/ /app/storage_worker
 
 COPY modelapi/ /app/modelapi
-
-COPY celery_worker/ /app/celery_worker
 
 COPY sentiment_analysis /app/sentiment_analysis
 

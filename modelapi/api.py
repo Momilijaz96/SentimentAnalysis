@@ -9,16 +9,14 @@ from http import HTTPStatus
 from typing import Dict
 from datetime import datetime
 from functools import wraps
-from celery_worker import worker
+from sentiment_analysis.main import predict_emotion
+from storage_worker import worker as storageworker
 from modelapi.schemas import PredictPayLoad
 from fastapi.middleware.cors import CORSMiddleware
-from mongo_db import utils as mongo_utils
 from config.config import logger, REDIS_URL
 import sys
 from celery.result import AsyncResult
 import time
-
-sys.path.append("../SENTIMENTANALYSIS")
 
 # Define application
 app = FastAPI(
@@ -110,28 +108,16 @@ async def predict_sentiment(request: Request, payload: PredictPayLoad) -> Dict:
 
     # Predict sentiment
     start = time.time()
-    result = worker.predict.delay(texts)
-
-    prediction = result.get()  # Block for result to be shown
+    predictions = predict_emotion(texts)
     end = time.time()
     print(f"Time taken for prediction: {end-start} seconds")
 
-    start = time.time()
-
     # Store result in MongoDB
-    for text, p in zip(texts, prediction):
-        doc = {
-            "tweet": text,
-            "prediction": p,
-            "created_at": datetime.now().isoformat(),
-        }
+    storageworker.store_tweet.delay(texts, predictions) # Asynchronously in background
 
-        status = mongo_utils.insert_doc(doc)
-    end = time.time()
-    print(f"Time taken for inserting in MongoDB: {end-start} seconds")
     response = {
         "message": "Sentiment prediction successful",
         "status-code": HTTPStatus.OK,
-        "data": {"prediction": prediction},
+        "data": {"prediction": predictions},
     }
     return response

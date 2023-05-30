@@ -1,0 +1,19 @@
+FROM python:3.11-slim
+
+WORKDIR /app
+
+COPY requirements/requirements_storageworker.txt .
+
+RUN pip install --upgrade pip
+
+RUN pip install -r requirements_storageworker.txt
+
+COPY config/ /app/config
+
+COPY storage_worker /app/storage_worker
+
+COPY storage /app/storage
+
+RUN chmod +x /usr/local/bin/celery
+
+CMD ["celery", "-A", "storage_worker.worker", "worker", "--loglevel=info"]
