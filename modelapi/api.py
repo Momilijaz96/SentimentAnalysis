@@ -16,6 +16,7 @@ from mongo_db import utils as mongo_utils
 from config.config import logger, REDIS_URL
 import sys
 from celery.result import AsyncResult
+import time
 
 sys.path.append("../SENTIMENTANALYSIS")
 
@@ -78,7 +79,6 @@ def index(request: Request) -> Dict:
     Returns:
         response: Dict
     """
-    logger.info(request)
     response = {
         "message": "Sentiment Analysis API is up and running",
         "status-code": HTTPStatus.OK,
@@ -109,9 +109,14 @@ async def predict_sentiment(request: Request, payload: PredictPayLoad) -> Dict:
         return response
 
     # Predict sentiment
+    start = time.time()
     result = worker.predict.delay(texts)
 
     prediction = result.get()  # Block for result to be shown
+    end = time.time()
+    print(f"Time taken for prediction: {end-start} seconds")
+
+    start = time.time()
 
     # Store result in MongoDB
     for text, p in zip(texts, prediction):
@@ -122,15 +127,11 @@ async def predict_sentiment(request: Request, payload: PredictPayLoad) -> Dict:
         }
 
         status = mongo_utils.insert_doc(doc)
-        if status:
-            logger.info(f"Inserted document with id: {status}")
-        else:
-            logger.warning("Error while inserting document in MongoDB")
-
+    end = time.time()
+    print(f"Time taken for inserting in MongoDB: {end-start} seconds")
     response = {
         "message": "Sentiment prediction successful",
         "status-code": HTTPStatus.OK,
         "data": {"prediction": prediction},
     }
     return response
-

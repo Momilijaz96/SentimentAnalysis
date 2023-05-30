@@ -8,6 +8,7 @@ const App = () => {
 
 
     const fetchData = async () => {
+      let start = new Date().getTime();
       try {
       const body = JSON.stringify({texts: [ {text: text} ]})
       const modelapi_service = '/api/predict'
@@ -20,12 +21,14 @@ const App = () => {
     } catch (error) {
       setError(error.message);
     };
+    let end = new Date().getTime();
+    let time = end - start;
+    console.log('Execution time: ' + time); // unti of time here is ms, divide by 1000 to get seconds
   };
 
   return (
     <div>
-      <h1>Tweet Sentiment Analysis</h1>
-      <h1> using DistilBERT</h1>
+      <h1>Find Sentiment of your SocialMedia Posts!</h1>
       <br></br>
       <br></br>
       <br></br>
@@ -45,7 +48,7 @@ const App = () => {
         <h3>{error}</h3>
       ) : (
         <>
-          {data && <h3>The tweet reflects {data.data.prediction[0]}</h3>}
+          {data && <h3>The text reflects {data.data.prediction[0]}</h3>}
         </>
       )}
     </div>

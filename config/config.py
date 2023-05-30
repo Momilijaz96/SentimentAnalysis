@@ -11,7 +11,17 @@ def get_env(env_name: str) -> str:
     try:
         return os.environ[env_name]
     except KeyError:
-        raise Exception(f"Environment variable {env_name} not set.")
+        # hacky way to read env vars from /env file for debugging  purpose
+        env_dir = Path(__file__).resolve().parent.parent.absolute() / "env"
+        for env_file in env_dir.glob("*.env"):
+            if env_file.exists():
+                with open(env_file, "r") as f:
+                    for line in f.readlines():
+                        if line.startswith(env_name):
+                            return line.split("=")[-1].strip()
+            else:
+                raise Exception(f"Environment variable {env_name} not set.")
+            # raise Exception(f"Environment variable {env_name} not set.")
 
 
 # Directories
