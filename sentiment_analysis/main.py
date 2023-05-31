@@ -16,12 +16,17 @@ def predict_emotion(text: List[str]) -> List:
     Returns:
         predictions: List of predicted emption str e.g ['happy', 'sad']
     """
-    logger.info("Predicting sentiment of given text")
     model = load_model_ckpt(MODEL_SAVE_PATH)
-    prediction = predict_sentiment(model, text)
-    if not isinstance(prediction, list):
-        prediction = [prediction]
-    return prediction
+    logger.info("Model loaded successfully")
 
+    logger.info("Predicting sentiment of given text...")
+    try:
+        prediction = predict_sentiment(model, text)
+        if not isinstance(prediction, list):
+            prediction = [prediction]
+        return prediction
+    except Exception as e:
+        logger.error(f"Error predicting sentiment: {e}")
+        raise e
 
 # predict_emotion(["I am happy", "I am sad"]) # Add later in PyTest

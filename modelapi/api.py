@@ -110,9 +110,10 @@ async def predict_sentiment(request: Request, payload: PredictPayLoad) -> Dict:
     start = time.time()
     predictions = predict_emotion(texts)
     end = time.time()
-    print(f"Time taken for prediction: {end-start} seconds")
+    logger.info(f"Time taken for prediction: {end-start} seconds")
 
     # Store result in MongoDB
+    logger.info("Storing result in MongoDB")
     storageworker.store_tweet.delay(texts, predictions) # Asynchronously in background
 
     response = {

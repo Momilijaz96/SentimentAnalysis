@@ -21,10 +21,13 @@ def load_model_ckpt(modle_ckpt_path: str) -> DistilBertModel:
     Returns:
         model: DistilBertModel
     """
-    logger.info("Loading model from checkpoint")
-    return AutoModelForSequenceClassification.from_pretrained(
-        modle_ckpt_path, label2id=label2id, id2label=id2label
-    )
+    try:
+        return AutoModelForSequenceClassification.from_pretrained(
+            modle_ckpt_path, label2id=label2id, id2label=id2label
+        )
+    except Exception as e:
+        logger.error(f"Error loading model from checkpoint: {e}")
+        raise e
 
 
 def predict_sentiment(model: DistilBertModel, text: str) -> int:

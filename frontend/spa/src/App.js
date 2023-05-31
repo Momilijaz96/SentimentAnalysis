@@ -23,7 +23,7 @@ const App = () => {
     };
     let end = new Date().getTime();
     let time = end - start;
-    console.log('Execution time: ' + time); // unti of time here is ms, divide by 1000 to get seconds
+    console.log('Execution time: ' + time); // unit of time here is ms, divide by 1000 to get seconds
   };
 
   return (
