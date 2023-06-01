@@ -11,7 +11,7 @@ const App = () => {
       let start = new Date().getTime();
       try {
       const body = JSON.stringify({texts: [ {text: text} ]})
-      const modelapi_service = 'http://localhost:8000/predict'
+      const modelapi_service = '/api/predict'
       console.log(modelapi_service)
       const response = await fetch(modelapi_service,{body: body,method: "POST",headers: {"Content-Type": "application/json"}})
       const data = await response.json();
