@@ -3,7 +3,6 @@
 from pathlib import Path
 import logging, logging.handlers
 from rich.logging import RichHandler
-import sys
 import os
 
 
@@ -21,7 +20,6 @@ def get_env(env_name: str) -> str:
                             return line.split("=")[-1].strip()
             else:
                 raise Exception(f"Environment variable {env_name} not set.")
-            # raise Exception(f"Environment variable {env_name} not set.")
 
 
 # Directories

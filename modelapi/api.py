@@ -107,13 +107,23 @@ async def predict_sentiment(request: Request, payload: PredictPayLoad) -> Dict:
         return response
 
     # Predict sentiment
-    start = time.time()
-    predictions = predict_emotion(texts)
-    end = time.time()
-    logger.info(f"Time taken for prediction: {end-start} seconds")
-
+    logger.debug("Predicting sentiment")
+    try:
+        start = time.time()
+        predictions = predict_emotion(texts)
+        end = time.time()
+        logger.info(f"Inference time: {end-start} seconds")
+    except Exception as e:
+        logger.error(f"Error predicting sentiment: {e}")
+        response = {
+            "message": "Error predicting sentiment, Check logs for details!",
+            "status-code": HTTPStatus.INTERNAL_SERVER_ERROR,
+            "data": {},
+        }
+        return response
+    
     # Store result in MongoDB
-    logger.info("Storing result in MongoDB")
+    logger.debug("Storing result in MongoDB")
     storageworker.store_tweet.delay(texts, predictions) # Asynchronously in background
 
     response = {

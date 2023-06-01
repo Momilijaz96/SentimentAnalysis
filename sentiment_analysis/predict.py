@@ -2,13 +2,12 @@
 from transformers import (
     AutoModelForSequenceClassification,
     DistilBertModel,
-    AutoTokenizer,
 )
 import torch
 
 
 from .data import preprocess_data
-from config.config import logger, label2id, id2label
+from config.config import  label2id, id2label
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -21,14 +20,10 @@ def load_model_ckpt(modle_ckpt_path: str) -> DistilBertModel:
     Returns:
         model: DistilBertModel
     """
-    try:
-        return AutoModelForSequenceClassification.from_pretrained(
+    return AutoModelForSequenceClassification.from_pretrained(
             modle_ckpt_path, label2id=label2id, id2label=id2label
         )
-    except Exception as e:
-        logger.error(f"Error loading model from checkpoint: {e}")
-        raise e
-
+   
 
 def predict_sentiment(model: DistilBertModel, text: str) -> int:
     """

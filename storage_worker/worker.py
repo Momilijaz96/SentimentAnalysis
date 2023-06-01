@@ -14,6 +14,7 @@ app = Celery("worker", broker=REDIS_URL, backend=REDIS_URL)
 
 @app.task
 def store_tweet(texts:List,predictions:List):
+    logger.debug("Storage worker received the task : ", texts)
     status = []
     for text, p in zip(texts, predictions):
         doc = {
@@ -23,4 +24,5 @@ def store_tweet(texts:List,predictions:List):
         }
         s = str(insert_doc(doc))
         status.append(s)
+    logger.debug("Storage worker completed the task : ", texts)
     return status 

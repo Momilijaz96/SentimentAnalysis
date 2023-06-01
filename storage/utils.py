@@ -9,14 +9,14 @@ from pymongo import MongoClient
 from typing import Dict
 
 def connect():
-    logger.info("DB Connection string: " + DB_CONNECTION_STRING)
+    logger.debug("DB Connection string: " + DB_CONNECTION_STRING)
     try:
         # Connect to the MongoDB server
         client = MongoClient(DB_CONNECTION_STRING)
 
         # Get the database you want to create the collection in
         db = client[DB_NAME]
-
+        logger.debug("Connected succesfully to MongoDB: " + DB_NAME)
         if COLLECTION_NAME not in client[DB_NAME].list_collection_names():
             logger.warning(
                 "Collection does not exist..Creating new collection: " + COLLECTION_NAME
@@ -69,4 +69,3 @@ def insert_doc(doc:Dict):
         return None
 
 
-connect()
