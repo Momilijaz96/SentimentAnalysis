@@ -67,3 +67,6 @@ def insert_doc(doc:Dict):
     else:
         logger.warning("Could'nt insert document becasue of connection error ")
         return None
+
+
+connect()

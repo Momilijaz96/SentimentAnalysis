@@ -1,10 +1,10 @@
 # Inside config.py, we'll add the code to define key directory locations
 
 from pathlib import Path
-import logging
+import logging, logging.handlers
+from rich.logging import RichHandler
 import sys
 import os
-from dynaconf import Dynaconf
 
 
 def get_env(env_name: str) -> str:
@@ -56,44 +56,37 @@ REDIS_URL = f"redis://:{REDIS_PASSWORD}@{REDIS_HOST}:{REDIS_PORT}"
 # Set logging configurations
 LOGS_DIR = Path(BASE_DIR, "logs")
 LOGS_DIR.mkdir(parents=True, exist_ok=True)
-logging_config = {
-    "version": 1,
-    "disable_existing_loggers": False,
-    "formatters": {
-        "minimal": {"format": "%(message)s"},
-        "detailed": {
-            "format": "%(levelname)s %(asctime)s [%(name)s:%(filename)s:%(funcName)s:%(lineno)d]\n%(message)s\n"
-        },
-    },
-    "handlers": {
-        "console": {
-            "class": "logging.StreamHandler",
-            "stream": sys.stdout,
-            "formatter": "minimal",
-            "level": logging.DEBUG,
-        },
-        "info": {
-            "class": "logging.handlers.RotatingFileHandler",
-            "filename": Path(LOGS_DIR, "info.log"),
-            "maxBytes": 10485760,  # 1 MB
-            "backupCount": 10,
-            "formatter": "detailed",
-            "level": logging.INFO,
-        },
-        "error": {
-            "class": "logging.handlers.RotatingFileHandler",
-            "filename": Path(LOGS_DIR, "error.log"),
-            "maxBytes": 10485760,  # 1 MB
-            "backupCount": 10,
-            "formatter": "detailed",
-            "level": logging.ERROR,
-        },
-    },
-    "root": {
-        "handlers": ["console", "info", "error"],
-        "level": logging.INFO,
-        "propagate": True,
-    },
-}
-# logging.config.dictConfig(logging_config)
+
+# Get root logger
 logger = logging.getLogger()
+logger.setLevel(logging.DEBUG)
+
+# Create handlers
+console_handler = RichHandler(markup=True)
+console_handler.setLevel(logging.DEBUG)
+info_handler = logging.handlers.RotatingFileHandler(
+    filename=Path(LOGS_DIR, "info.log"),
+    maxBytes=10485760,  # 1 MB
+    backupCount=10,
+)
+info_handler.setLevel(logging.INFO)
+error_handler = logging.handlers.RotatingFileHandler(
+    filename=Path(LOGS_DIR, "error.log"),
+    maxBytes=10485760,  # 1 MB
+    backupCount=10,
+)
+error_handler.setLevel(logging.ERROR)
+
+# Create formatters
+minimal_formatter = logging.Formatter(fmt="%(message)s")
+detailed_formatter = logging.Formatter(
+    fmt="%(levelname)s %(asctime)s [%(name)s:%(filename)s:%(funcName)s:%(lineno)d]\n%(message)s\n"
+)
+
+# Hook it all up
+console_handler.setFormatter(fmt=minimal_formatter)
+info_handler.setFormatter(fmt=detailed_formatter)
+error_handler.setFormatter(fmt=detailed_formatter)
+logger.addHandler(hdlr=console_handler)
+logger.addHandler(hdlr=info_handler)
+logger.addHandler(hdlr=error_handler)
