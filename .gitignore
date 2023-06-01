@@ -5,3 +5,5 @@ logs/
 env/
 __pycache__/
 */__pycache__/
+logstash-8.8.0/
+elasticsearch-8.8.0/
