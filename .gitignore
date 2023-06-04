@@ -8,3 +8,4 @@ __pycache__/
 logstash-8.8.0/*
 !logstash-8.8.0/config/logstash.conf
 elasticsearch-8.8.0/
+!elasticsearch-8.8.0/config/elasticsearch.yml
