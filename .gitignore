@@ -5,5 +5,6 @@ logs/
 env/
 __pycache__/
 */__pycache__/
-logstash-8.8.0/
+logstash-8.8.0/*
+!logstash-8.8.0/config/logstash.conf
 elasticsearch-8.8.0/

@@ -112,7 +112,8 @@ async def predict_sentiment(request: Request, payload: PredictPayLoad) -> Dict:
         start = time.time()
         predictions = predict_emotion(texts)
         end = time.time()
-        logger.info(f"Inference time: {end-start} seconds")
+        model_inf_time = round(end-start,3)
+        logger.info(f"Inference time: {model_inf_time} seconds")
     except Exception as e:
         logger.error(f"Error predicting sentiment: {e}")
         response = {
@@ -123,8 +124,8 @@ async def predict_sentiment(request: Request, payload: PredictPayLoad) -> Dict:
         return response
     
     # Store result in MongoDB
-    logger.debug("Storing result in MongoDB")
-    storageworker.store_tweet.delay(texts, predictions) # Asynchronously in background
+    logger.debug(f"Saving result to database")
+    storageworker.store_tweet.delay(texts, predictions, model_inf_time) # Asynchronously in background
 
     response = {
         "message": "Sentiment prediction successful",
