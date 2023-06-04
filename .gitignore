@@ -5,7 +5,8 @@ logs/
 env/
 __pycache__/
 */__pycache__/
-logstash-8.8.0/*
 !logstash-8.8.0/config/logstash.conf
-elasticsearch-8.8.0/
 !elasticsearch-8.8.0/config/elasticsearch.yml
+logstash-8.8.0/*
+elasticsearch-8.8.0/*
+grafana-9.5.2/*
